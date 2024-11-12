@@ -8,6 +8,7 @@
   "private": true,
   "license": "Apache-2.0",
   "dependencies": {
+    "@hono/sentry": "^1.2.0",
     "@octokit/rest": "^21.0.2",
     "hono": "^4.6.9",
     "zenn-markdown-html": "^0.1.158"

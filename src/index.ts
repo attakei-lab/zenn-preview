@@ -9,11 +9,13 @@ app.get("/:slug", async (c) => {
   const octokit = new Octokit({
     auth: c.env.REPO_PAT,
   });
-  const resp = await octokit.rest.repos.getContent({
-    owner: c.env.REPO_OWNER,
-    repo: c.env.REPO_NAME,
+  const params = {
+    owner: c.req.query("org") || c.env.REPO_ORG,
+    repo: c.req.query("name") || c.env.REPO_NAME,
     path: `articles/${c.req.param("slug")}.md`,
-  });
+    ref: c.req.query("ref"),
+  };
+  const resp = await octokit.rest.repos.getContent(params);
   const md = Buffer.from(resp.data.content, "base64").toString();
   const html = `
   <!DOCTYPE html>

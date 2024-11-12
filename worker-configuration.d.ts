@@ -5,4 +5,5 @@ interface CloudflareBindings {
 	REPO_NAME: string;
 	REPO_PAT: string;
 	SENTRY_DSN: string;
+	SENTRY_ENVIRONMENT: string;
 }

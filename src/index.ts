@@ -1,12 +1,17 @@
 import { Buffer } from "node:buffer";
-import { Hono } from "hono";
+import { Context, Hono } from "hono";
 import { sentry } from "@hono/sentry";
 import { Octokit } from "@octokit/rest";
 import markdownToHtml from "zenn-markdown-html";
 
 const app = new Hono<{ Bindings: CloudflareBindings }>();
 
-app.use("*", sentry());
+app.use("*", (c: Context, next: any) => {
+  return sentry({
+    dsn: c.env.SENTRY_DSN,
+    environment: c.env.SENTRY_ENVIRONMENT || "debug",
+  })(c, next);
+});
 
 app.get("/:slug", async (c) => {
   const octokit = new Octokit({

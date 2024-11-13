@@ -1,0 +1,21 @@
+name: 'Deployment production'
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+
+jobs:
+  deploy:
+    runs-on: 'ubuntu-latest'
+    name: 'Deploy workers'
+    environment: 'production'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: jdx/mise-action@v2
+      - name: 'Deploy'
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: '${{ secrets.CLOUDFLARE_API_TOKEN }}'
+          command: 'deploy --name ${{ secrets.CLOUDFLARE_WORKER_NAME }}'
+

@@ -4,6 +4,10 @@ import { sentry } from '@hono/sentry';
 import { Octokit } from '@octokit/rest';
 import markdownToHtml from 'zenn-markdown-html';
 
+type Props = {
+  body?: string;
+};
+
 const app = new Hono<{ Bindings: CloudflareBindings }>();
 
 app.use('*', (c: Context, next: any) => {
@@ -14,6 +18,7 @@ app.use('*', (c: Context, next: any) => {
 });
 
 app.get('/:slug', async (c) => {
+  let props: Props = {};
   const octokit = new Octokit({
     auth: c.env.REPO_PAT,
   });
@@ -23,9 +28,18 @@ app.get('/:slug', async (c) => {
     path: `articles/${c.req.param('slug')}.md`,
     ref: c.req.query('ref'),
   };
-  const resp = await octokit.rest.repos.getContent(params);
-  const md = Buffer.from(resp.data.content, 'base64').toString();
-  const html = `
+  try {
+    const resp = await octokit.rest.repos.getContent(params);
+    const md = Buffer.from(resp.data.content, 'base64').toString();
+    props.body = markdownToHtml(md);
+  } catch (error) {
+    if (error.status) {
+      console.error(error);
+      c.status(404);
+      return c.text('Content is not found.');
+    }
+  }
+  return c.html(`
   <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -35,12 +49,11 @@ app.get('/:slug', async (c) => {
 </head>
 <body>
   <div class="znc">
-    ${markdownToHtml(md)}
+    ${props.body}
   </div>
 </body>
 </html>
-  `;
-  return c.html(html);
+  `);
 });
 
 export default app;

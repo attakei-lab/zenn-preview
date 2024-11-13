@@ -1,0 +1,27 @@
+name: 'Run CI jobs'
+
+on:
+  push:
+    branches:
+      - '**'
+    tags-ignore:
+      - '**'
+  pull_request:
+  workflow_dispatch:
+  schedule:
+    - cron: '30 0 * * 1'
+
+jobs:
+  lint:
+    runs-on: 'ubuntu-latest'
+    name: 'Check by linters'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: jdx/mise-action@v2
+      - name: 'Setup workspace'
+        run: |
+          pnpm install
+      - name: 'Check format'
+        run: |
+          pnpm biome format src
+

@@ -1,0 +1,16 @@
+current_version = "0.1.0"
+
+[[files]]
+path = "package.json"
+search = "  \"version\": \"{{current_version}}\","
+replace = "  \"version\": \"{{new_version}}\","
+
+[[files]]
+path = "CHANGELOG.md"
+search = "# 更新履歴"
+replace = """
+# 更新履歴
+
+## v{{new_version}} - {{now|date}} (JST)
+"""
+

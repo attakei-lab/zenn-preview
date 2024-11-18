@@ -1,6 +1,8 @@
 import { Buffer } from 'node:buffer';
-import { Context, Hono } from 'hono';
-import { parse, HTMLElement } from 'node-html-parser';
+import type { Context } from 'hono';
+import { Hono } from 'hono';
+import type { HTMLElement } from 'node-html-parser';
+import { parse } from 'node-html-parser';
 import frontMatter from 'front-matter';
 import { html, raw } from 'hono/html';
 import { sentry } from '@hono/sentry';

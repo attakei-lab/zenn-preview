@@ -2,13 +2,10 @@ import { Buffer } from 'node:buffer';
 import { Context, Hono } from 'hono';
 import { parse, HTMLElement } from 'node-html-parser';
 import frontMatter from 'front-matter';
+import { html, raw } from 'hono/html';
 import { sentry } from '@hono/sentry';
 import { Octokit } from '@octokit/rest';
 import markdownToHtml from 'zenn-markdown-html';
-
-type Props = {
-  body?: string;
-};
 
 type FrontMatter = {
   title?: string;
@@ -17,6 +14,11 @@ type FrontMatter = {
   type?: string;
   published?: boolean;
   published_at?: string;
+};
+
+type Props = {
+  body: string;
+  frontMatter: FrontMatter;
 };
 
 const parseFrontMatter = (
@@ -56,7 +58,7 @@ app.get('/:slug', async (c) => {
     dom.querySelector('hr')?.remove();
     const metadata = dom.querySelector('h2');
     metadata?.parentNode?.removeChild(metadata);
-    const frontMatter = parseFrontMatter(metadata, (elm) => {
+    props.frontMatter = parseFrontMatter(metadata, (elm) => {
       elm.querySelector('a').remove();
       for (const br of elm.querySelectorAll('br')) {
         br.parentNode.removeChild(br);
@@ -73,21 +75,37 @@ app.get('/:slug', async (c) => {
       return c.text('Content is not found.');
     }
   }
-  return c.html(`
-  <!DOCTYPE html>
-<html lang="ja">
-<head>
-  <meta charset="UTF-8">
-  <title>Zenn article</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/zenn-content-css@0.1.158/lib/index.min.css">
-</head>
-<body>
-  <div class="znc">
-    ${props.body}
-  </div>
-</body>
-</html>
-  `);
+  const content = (
+    <>
+      <div>
+        <h1>
+          {props.frontMatter.title}
+          <br />
+          {props.frontMatter.emoji}
+        </h1>
+      </div>
+      <hr />
+      <hr />
+      <div className="znc">{raw(props.body)}</div>
+    </>
+  );
+  return c.html(
+    html`<!DOCTYPE html>
+    <html lang="ja">
+      <head>
+        <meta charset="UTF-8" />
+        <title>Zenn article</title>
+        <link
+          rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/zenn-content-css@0.1.158/lib/index.min.css"
+        />
+      </head>
+      <body>
+        ${content}
+      </body>
+    </html>
+    `,
+  );
 });
 
 export default app;

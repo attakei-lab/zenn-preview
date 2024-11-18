@@ -67,8 +67,8 @@ app.get('/:slug', async (c) => {
     console.log(frontMatter);
     props.body = dom.toString();
   } catch (error) {
+    console.error(error);
     if (error.status) {
-      console.error(error);
       c.status(404);
       return c.text('Content is not found.');
     }

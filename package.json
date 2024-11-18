@@ -12,8 +12,10 @@
   "dependencies": {
     "@hono/sentry": "^1.2.0",
     "@octokit/rest": "^21.0.2",
+    "front-matter": "^4.0.2",
     "hono": "^4.6.9",
     "lefthook": "^1.8.2",
+    "node-html-parser": "^6.1.13",
     "zenn-markdown-html": "^0.1.158"
   },
   "devDependencies": {

@@ -1,37 +1,11 @@
-import { Buffer } from 'node:buffer';
 import type { Context } from 'hono';
 import { Hono } from 'hono';
-import type { HTMLElement } from 'node-html-parser';
-import { parse } from 'node-html-parser';
-import frontMatter from 'front-matter';
 import { html, raw } from 'hono/html';
 import { sentry } from '@hono/sentry';
 import { Octokit } from '@octokit/rest';
-import markdownToHtml from 'zenn-markdown-html';
-
-type FrontMatter = {
-  title?: string;
-  emoji?: string;
-  topics?: string[];
-  type?: string;
-  published?: boolean;
-  published_at?: string;
-};
-
-type Props = {
-  body: string;
-  frontMatter: FrontMatter;
-};
-
-const parseFrontMatter = (
-  elm: HTMLElement,
-  pre?: (e: HTMLElement) => HTMLElement,
-): FrontMatter => {
-  const raw = (pre ? pre(elm) : elm).innerHTML;
-  const source = `---\n${raw}\n---\n`;
-  const fm = frontMatter(source);
-  return fm.attributes as FrontMatter;
-};
+import type { Props } from './types';
+import { fetchContent } from './client';
+import { parseContentMarkdown } from './parser';
 
 const app = new Hono<{ Bindings: CloudflareBindings }>();
 
@@ -43,7 +17,7 @@ app.use('*', (c: Context, next: any) => {
 });
 
 app.get('/:slug', async (c) => {
-  let props: Props = {};
+  const props: Props = {};
   const octokit = new Octokit({
     auth: c.env.REPO_PAT,
   });
@@ -54,22 +28,10 @@ app.get('/:slug', async (c) => {
     ref: c.req.query('ref'),
   };
   try {
-    const resp = await octokit.rest.repos.getContent(params);
-    const md = Buffer.from(resp.data.content, 'base64').toString();
-    const dom = parse(markdownToHtml(md));
-    dom.querySelector('hr')?.remove();
-    const metadata = dom.querySelector('h2');
-    metadata?.parentNode?.removeChild(metadata);
-    props.frontMatter = parseFrontMatter(metadata, (elm) => {
-      elm.querySelector('a').remove();
-      for (const br of elm.querySelectorAll('br')) {
-        br.parentNode.removeChild(br);
-      }
-      return elm;
-    });
-
-    console.log(frontMatter);
-    props.body = dom.toString();
+    const md = await fetchContent(octokit, params);
+    const { body, frontMatter } = parseContentMarkdown(md);
+    props.body = body.toString();
+    props.frontMatter = frontMatter;
   } catch (error) {
     console.error(error);
     if (error.status) {
@@ -81,9 +43,9 @@ app.get('/:slug', async (c) => {
     <>
       <div>
         <h1>
-          {props.frontMatter.title}
+          {props.frontMatter?.title}
           <br />
-          {props.frontMatter.emoji}
+          {props.frontMatter?.emoji}
         </h1>
       </div>
       <hr />

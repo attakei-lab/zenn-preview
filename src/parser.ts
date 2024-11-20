@@ -13,8 +13,8 @@ type Content = {
   frontMatter: FrontMatter;
 };
 
-const parseFrontMatter = (elm: HTMLElement): FrontMatter => {
-  const raw = elm.innerHTML;
+export const parseFrontMatter = (elm: HTMLElement): FrontMatter => {
+  const raw = elm.innerText;
   const source = `---\n${raw}\n---\n`;
   const fm = frontMatter(source);
   return fm.attributes as FrontMatter;

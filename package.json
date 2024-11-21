@@ -17,7 +17,8 @@
     "hono": "^4.6.9",
     "lefthook": "^1.8.2",
     "node-html-parser": "^6.1.13",
-    "zenn-markdown-html": "^0.1.158"
+    "zenn-markdown-html": "^0.1.158",
+    "zod": "^3.23.8"
   },
   "devDependencies": {
     "@biomejs/biome": "1.9.4",

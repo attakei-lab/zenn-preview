@@ -29,6 +29,9 @@ importers:
       zenn-markdown-html:
         specifier: ^0.1.158
         version: 0.1.158(@types/markdown-it@14.1.2)
+      zod:
+        specifier: ^3.23.8
+        version: 3.23.8
     devDependencies:
       '@biomejs/biome':
         specifier: 1.9.4

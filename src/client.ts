@@ -2,8 +2,18 @@
  * GitHub api client
  *
  */
-import type { Octokit } from '@octokit/rest';
+import { Octokit } from '@octokit/rest';
+import type { Context } from 'hono';
 import type { ContentAddress } from './models';
+
+/**
+ * Create client object from context of Hono.
+ */
+export const initClient = (c: Context): Octokit => {
+  return new Octokit({
+    auth: c.env.REPO_PAT,
+  });
+};
 
 export const fetchContent = async (
   octokit: Octokit,

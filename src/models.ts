@@ -10,6 +10,21 @@ export const ContentAddress = z.object({
   ref: z.optional(z.string()),
 });
 
+export type ZennFrontMatter = {
+  title?: string;
+  emoji?: string;
+  topics?: string[];
+  type?: string;
+  published?: boolean;
+  published_at?: string;
+};
+
+export type ZennContent = {
+  addr: ContentAddress;
+  body: string;
+  frontMatter: ZennFrontMatter;
+};
+
 export type ContentAddress = z.infer<typeof ContentAddress>;
 
 /**

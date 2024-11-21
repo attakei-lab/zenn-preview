@@ -3,6 +3,7 @@ import { Hono } from 'hono';
 import { html, raw } from 'hono/html';
 import { sentry } from '@hono/sentry';
 import { Octokit } from '@octokit/rest';
+import api from './api';
 import type { Props } from './types';
 import { fetchContent } from './client';
 import { parseContentMarkdown } from './parser';
@@ -15,6 +16,7 @@ app.use('*', (c: Context, next: any) => {
     environment: c.env.SENTRY_ENVIRONMENT || 'debug',
   })(c, next);
 });
+app.route('/api', api);
 
 app.get('/:slug', async (c) => {
   const props: Props = {};

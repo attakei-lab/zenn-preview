@@ -5,6 +5,7 @@
     "postinstall": "lefthook install",
     "test": "vitest",
     "dev": "wrangler dev",
+    "e2e": "vitest --config e2e/vitest.config.ts",
     "deploy": "wrangler deploy --minify",
     "cf-typegen": "wrangler types --env-interface CloudflareBindings"
   },

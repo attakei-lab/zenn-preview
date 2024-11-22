@@ -19,7 +19,7 @@ api.post('/content-url', zValidator('json', ContentAddress), async (c) => {
     // Try to fetch content as address validation.
     const octokit = initClient(c);
     await fetchContent(octokit, addr);
-    return c.text(makeSlug(addr));
+    return c.json({ slug: makeSlug(addr) });
   } catch (error) {
     console.error(error);
     c.status(404);

@@ -14,7 +14,10 @@ it('Flow for public contents', async () => {
     }),
   });
   expect(resp.status).toBe(200);
-  const slug = await resp.text();
-  resp = await fetch(`${inject('URL_BASE')}/${slug}`);
+  const json = JSON.parse(await resp.text());
+  expect(json.slug).toBe(
+    'JTdCJTIyb3duZXIlMjIlM0ElMjJhdHRha2VpJTIyJTJDJTIycmVwbyUyMiUzQSUyMnplbm4tY29udGVudHMlMjIlMkMlMjJwYXRoJTIyJTNBJTIyYXJ0aWNsZXMlMkZhZ2UtY2xpLWJldGEubWQlMjIlN0Q=',
+  );
+  resp = await fetch(`${inject('URL_BASE')}/${json.slug}`);
   expect(resp.status).toBe(200);
 });

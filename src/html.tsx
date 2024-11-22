@@ -4,7 +4,13 @@
  * This module is to manage routes for Web API (not render html and images).
  */
 import { Hono } from 'hono';
+import { html, raw } from 'hono/html';
+import { Octokit } from '@octokit/rest';
+import { fetchContent } from './client';
 import { Input } from './components';
+import { parseSlug } from './models';
+import type { ZennContent } from './models';
+import { parseContentMarkdown } from './parser';
 
 const app = new Hono();
 app.use(async (c, next) => {
@@ -86,6 +92,51 @@ app.get('/', (c) => {
       </body>
     </html>,
   );
+});
+
+app.get('/:slug', async (c) => {
+  let props: ZennContent;
+  const octokit = new Octokit({
+    auth: c.env.REPO_PAT,
+  });
+  const addr = parseSlug(c.req.param('slug'));
+  try {
+    const md = await fetchContent(octokit, addr);
+    props = parseContentMarkdown(md);
+    return c.html(
+      html`
+      <!DOCTYPE html>
+      <html lang="ja">
+        <head>
+          <meta charset="UTF-8" />
+          <title>Zenn article</title>
+          <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/zenn-content-css@0.1.158/lib/index.min.css"
+          />
+        </head>
+        <body>
+        <div>
+          <h1>
+            ${props.frontMatter?.title}
+            <br />
+            ${props.frontMatter?.emoji}
+          </h1>
+        </div>
+        <hr />
+        <hr />
+        <div class="znc">${raw(props.body)}</div>
+        </body>
+      </html>
+    `,
+    );
+  } catch (error) {
+    console.error(error);
+    if (error.status) {
+      c.status(404);
+      return c.text('Content is not found.');
+    }
+  }
 });
 
 export default app;

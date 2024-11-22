@@ -4,7 +4,6 @@
  * This module is to manage routes for Web API (not render html and images).
  */
 import { Hono } from 'hono';
-import { html, raw } from 'hono/html';
 import { Octokit } from '@octokit/rest';
 import { fetchContent } from './client';
 import { Input } from './components';
@@ -12,7 +11,7 @@ import { parseSlug } from './models';
 import type { ZennContent } from './models';
 import { parseContentMarkdown } from './parser';
 
-const app = new Hono();
+const app = new Hono<{ Bindings: CloudflareBindings }>();
 app.use(async (c, next) => {
   c.setRenderer((content) => {
     return c.html(`<!DOCTYPE html>${content}`);
@@ -103,9 +102,7 @@ app.get('/:slug', async (c) => {
   try {
     const md = await fetchContent(octokit, addr);
     props = parseContentMarkdown(md);
-    return c.html(
-      html`
-      <!DOCTYPE html>
+    return c.render(
       <html lang="ja">
         <head>
           <meta charset="UTF-8" />
@@ -116,19 +113,18 @@ app.get('/:slug', async (c) => {
           />
         </head>
         <body>
-        <div>
-          <h1>
-            ${props.frontMatter?.title}
-            <br />
-            ${props.frontMatter?.emoji}
-          </h1>
-        </div>
-        <hr />
-        <hr />
-        <div class="znc">${raw(props.body)}</div>
+          <div>
+            <h1>
+              {props.frontMatter?.title}
+              <br />
+              {props.frontMatter?.emoji}
+            </h1>
+          </div>
+          <hr />
+          <hr />
+          <div class="znc" dangerouslySetInnerHTML={{ __html: props.body }} />
         </body>
-      </html>
-    `,
+      </html>,
     );
   } catch (error) {
     console.error(error);

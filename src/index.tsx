@@ -4,6 +4,7 @@ import { html, raw } from 'hono/html';
 import { sentry } from '@hono/sentry';
 import { Octokit } from '@octokit/rest';
 import api from './api';
+import htmlRouter from './html';
 import { fetchContent } from './client';
 import { parseContentMarkdown } from './parser';
 import { parseSlug } from './models';
@@ -18,6 +19,7 @@ app.use('*', (c: Context, next: any) => {
   })(c, next);
 });
 app.route('/api', api);
+app.route('/', htmlRouter);
 
 app.get('/:slug', async (c) => {
   let props: ZennContent;

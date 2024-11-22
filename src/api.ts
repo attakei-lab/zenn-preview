@@ -15,6 +15,9 @@ const api = new Hono();
  */
 api.post('/content-url', zValidator('json', ContentAddress), async (c) => {
   const addr = c.req.valid('json');
+  if (addr.ref === '') {
+    addr.ref = undefined;
+  }
   try {
     // Try to fetch content as address validation.
     const octokit = initClient(c);

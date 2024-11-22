@@ -5,6 +5,7 @@
     "postinstall": "lefthook install",
     "test": "vitest",
     "dev": "wrangler dev",
+    "e2e": "vitest --config e2e/vitest.config.ts",
     "deploy": "wrangler deploy --minify",
     "cf-typegen": "wrangler types --env-interface CloudflareBindings"
   },
@@ -12,11 +13,13 @@
   "license": "Apache-2.0",
   "dependencies": {
     "@hono/sentry": "^1.2.0",
+    "@hono/zod-validator": "^0.4.1",
     "@octokit/rest": "^21.0.2",
     "front-matter": "^4.0.2",
     "hono": "^4.6.9",
     "node-html-parser": "^6.1.13",
-    "zenn-markdown-html": "^0.1.158"
+    "zenn-markdown-html": "^0.1.158",
+    "zod": "^3.23.8"
   },
   "devDependencies": {
     "@biomejs/biome": "1.9.4",

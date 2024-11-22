@@ -6,21 +6,16 @@ import frontMatter from 'front-matter';
 import type { HTMLElement } from 'node-html-parser';
 import { parse } from 'node-html-parser';
 import markdownToHtml from 'zenn-markdown-html';
-import type { FrontMatter } from './types';
+import type { ZennContent, ZennFrontMatter } from './models';
 
-type Content = {
-  body: HTMLElement;
-  frontMatter: FrontMatter;
-};
-
-export const parseFrontMatter = (elm: HTMLElement): FrontMatter => {
+export const parseFrontMatter = (elm: HTMLElement): ZennFrontMatter => {
   const raw = elm.innerText;
   const source = `---\n${raw}\n---\n`;
   const fm = frontMatter(source);
-  return fm.attributes as FrontMatter;
+  return fm.attributes as ZennFrontMatter;
 };
 
-export const parseContentMarkdown = (md: string): Content => {
+export const parseContentMarkdown = (md: string): ZennContent => {
   const dom = parse(markdownToHtml(md));
   dom.querySelector('hr')?.remove();
   const metadata = dom.querySelector('h2');
@@ -29,9 +24,8 @@ export const parseContentMarkdown = (md: string): Content => {
   for (const br of metadata.querySelectorAll('br')) {
     br.parentNode.removeChild(br);
   }
-  const fm = parseFrontMatter(metadata);
   return {
-    body: dom,
-    frontMatter: fm,
+    body: dom.toString(),
+    frontMatter: parseFrontMatter(metadata),
   };
 };

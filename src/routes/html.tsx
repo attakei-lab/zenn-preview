@@ -5,11 +5,11 @@
  */
 import { Hono } from 'hono';
 import { Octokit } from '@octokit/rest';
-import { fetchContent } from './client';
-import { Input } from './components';
-import { parseSlug } from './models';
-import type { ZennContent } from './models';
-import { parseContentMarkdown } from './parser';
+import { fetchContent } from '../client';
+import { Input } from '../components';
+import { parseSlug } from '../models';
+import type { ZennContent } from '../models';
+import { parseContentMarkdown } from '../parser';
 
 const app = new Hono<{ Bindings: CloudflareBindings }>();
 app.use(async (c, next) => {

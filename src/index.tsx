@@ -1,8 +1,8 @@
 import type { Context } from 'hono';
 import { Hono } from 'hono';
 import { sentry } from '@hono/sentry';
-import api from './api';
-import htmlRouter from './html';
+import api from './routes/api';
+import html from './routes/html';
 
 const app = new Hono<{ Bindings: CloudflareBindings }>();
 
@@ -13,6 +13,6 @@ app.use('*', (c: Context, next: any) => {
   })(c, next);
 });
 app.route('/api', api);
-app.route('/', htmlRouter);
+app.route('/', html);
 
 export default app;

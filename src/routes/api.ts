@@ -5,8 +5,8 @@
  */
 import { Hono } from 'hono';
 import { zValidator } from '@hono/zod-validator';
-import { ContentAddress, makeSlug } from './models';
-import { fetchContent, initClient } from './client';
+import { ContentAddress, makeSlug } from '../models';
+import { fetchContent, initClient } from '../client';
 
 const api = new Hono();
 

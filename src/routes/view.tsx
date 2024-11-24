@@ -3,7 +3,7 @@
  */
 
 import { Hono } from 'hono';
-import { Octokit } from '@octokit/rest';
+import { Octokit } from '@octokit/core';
 import { fetchContent } from '../client';
 import { Layout } from '../components/layouts';
 import { parseSlug } from '../models';

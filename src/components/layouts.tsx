@@ -1,4 +1,5 @@
 import type { FC, PropsWithChildren } from 'hono/jsx';
+import { html } from 'hono/html';
 
 type LayoutProps = {
   title: string;
@@ -7,7 +8,7 @@ type LayoutProps = {
 };
 
 export const Layout: FC<PropsWithChildren<LayoutProps>> = (props) => {
-  return (
+  const content = (
     <html lang="ja">
       <head>
         <meta charset="UTF-8" />
@@ -20,6 +21,7 @@ export const Layout: FC<PropsWithChildren<LayoutProps>> = (props) => {
       <body>{props.children}</body>
     </html>
   );
+  return html`<!DOCTYPE html>${content}`;
 };
 
 export const AppLayout: FC<

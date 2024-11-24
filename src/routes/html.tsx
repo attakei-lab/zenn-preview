@@ -12,12 +12,6 @@ import { parseSlug } from '../models';
 import { parseContentMarkdown } from '../parser';
 
 const app = new Hono<{ Bindings: CloudflareBindings }>();
-app.use(async (c, next) => {
-  c.setRenderer((content) => {
-    return c.html(`<!DOCTYPE html>${content}`);
-  });
-  await next();
-});
 
 /**
  * Render frontpage that has form.

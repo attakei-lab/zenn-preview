@@ -20,17 +20,24 @@ app.post('/content-url', zValidator('json', ContentAddress), async (c) => {
       'content-type': 'application/json',
     },
   });
-  const data = await resp.json();
+  if (resp.ok) {
+    const data = await resp.json();
+    return c.html(
+      <AppMessageBox title="OK!" type="link">
+        <p>Content URL is created!</p>
+        <p>
+          Link is{' '}
+          <a href={`/view/${data.slug}`} target="_blank" rel="noreferrer">
+            here
+          </a>
+          .
+        </p>
+      </AppMessageBox>,
+    );
+  }
   return c.html(
-    <AppMessageBox title="OK!" type="link">
-      <p>Content URL is created!</p>
-      <p>
-        Link is{' '}
-        <a href={`/view/${data.slug}`} target="_blank" rel="noreferrer">
-          here
-        </a>
-        .
-      </p>
+    <AppMessageBox title="Error!" type="danger">
+      <p>{await resp.text()}</p>
     </AppMessageBox>,
   );
 });

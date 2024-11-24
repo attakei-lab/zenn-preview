@@ -56,6 +56,8 @@ export const AppMessageBox: FC<
     <div class="message-header">
       <p>{props.title}</p>
     </div>
-    <div class="message-body">{props.children}</div>
+    <div class="message-body">
+      <div class="content">{props.children}</div>
+    </div>
   </article>
 );

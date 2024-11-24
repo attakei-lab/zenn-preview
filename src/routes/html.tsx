@@ -5,7 +5,7 @@
  */
 import { Hono } from 'hono';
 import { Input } from '../components/inputs';
-import { AppLayout } from '../components/layouts';
+import { AppLayout, AppMessageBox } from '../components/layouts';
 
 const app = new Hono<{ Bindings: CloudflareBindings }>();
 
@@ -43,7 +43,18 @@ app.get('/', (c) => {
             </form>
           </div>
           <div class="column">
-            <div class="section" id="result" />
+            <div class="section" id="result">
+              <AppMessageBox title="Usage" type="info">
+                <ol>
+                  <li>左のフォームに必要な情報を入力してください。</li>
+                  <li>
+                    リポジトリがPrivateなら、事前に attakei
+                    にRead権限を付与してください。
+                  </li>
+                  <li>「URL生成」ボタンをクリックしてください。</li>
+                </ol>
+              </AppMessageBox>
+            </div>
           </div>
         </div>
       </section>

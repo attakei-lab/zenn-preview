@@ -3,8 +3,7 @@
  */
 
 import { Hono } from 'hono';
-import { Octokit } from '@octokit/rest';
-import { fetchContent } from '../client';
+import { fetchContent, Client } from '../client';
 import { Layout } from '../components/layouts';
 import { parseSlug } from '../models';
 import { parseContentMarkdown } from '../parser';
@@ -12,10 +11,9 @@ import { parseContentMarkdown } from '../parser';
 const app = new Hono<{ Bindings: CloudflareBindings }>();
 
 app.get('/:slug', async (c) => {
-  const octokit = new Octokit({
-    auth: c.env.REPO_PAT,
-  });
   const addr = parseSlug(c.req.param('slug'));
+  const client = new Client(c);
+  const octokit = await client.getApp(addr.owner);
   try {
     const md = await fetchContent(octokit, addr);
     const content = parseContentMarkdown(md);

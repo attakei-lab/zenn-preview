@@ -6,13 +6,15 @@
 import { Hono } from 'hono';
 import { Input } from '../components/inputs';
 import { AppLayout, AppMessageBox } from '../components/layouts';
+import { Client } from '../client';
 
 const app = new Hono<{ Bindings: CloudflareBindings }>();
 
 /**
  * Render frontpage that has form.
  */
-app.get('/', (c) => {
+app.get('/', async (c) => {
+  const client = new Client(c);
   return c.html(
     <AppLayout title="Zenn Private Previwer">
       <section class="hero">
@@ -47,12 +49,20 @@ app.get('/', (c) => {
             <div class="section" id="result">
               <AppMessageBox title="Usage" type="info">
                 <ol>
-                  <li>左のフォームに必要な情報を入力してください。</li>
                   <li>
-                    リポジトリがPrivateなら、事前に attakei
-                    にRead権限を付与してください。
+                    <a
+                      href={await client.getInstallationUrl()}
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      このリンク
+                    </a>
+                    から、GitHub
+                    Applicationのインストール/設定を行い、対象リポジトリへのRead権限を付与してください。
                   </li>
-                  <li>「URL生成」ボタンをクリックしてください。</li>
+                  <li>
+                    フォームに必要な情報の入力を行い、「URL生成」ボタンをクリックしてください。
+                  </li>
                 </ol>
               </AppMessageBox>
             </div>

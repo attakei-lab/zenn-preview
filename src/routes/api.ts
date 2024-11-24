@@ -6,7 +6,7 @@
 import { Hono } from 'hono';
 import { zValidator } from '@hono/zod-validator';
 import { ContentAddress, makeSlug } from '../models';
-import { fetchContent, initClient } from '../client';
+import { fetchContent, Client } from '../client';
 
 const api = new Hono();
 
@@ -20,7 +20,8 @@ api.post('/content-url', zValidator('json', ContentAddress), async (c) => {
   }
   try {
     // Try to fetch content as address validation.
-    const octokit = initClient(c);
+    const client = new Client(c);
+    const octokit = await client.getApp(addr.owner);
     await fetchContent(octokit, addr);
     return c.json({ slug: makeSlug(addr) });
   } catch (error) {

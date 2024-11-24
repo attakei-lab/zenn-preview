@@ -4,11 +4,10 @@
  * This module is to manage routes for Web API (not render html and images).
  */
 import { Hono } from 'hono';
-import type { StatusCode } from 'hono/utils/http-status';
 import { AppMessageBox } from '../components/layouts';
 import { zValidator } from '@hono/zod-validator';
 import { ContentAddress, makeSlug } from '../models';
-import { fetchContent, initClient } from '../client';
+import { fetchContent, Client } from '../client';
 
 const app = new Hono<{ Bindings: CloudflareBindings }>();
 
@@ -18,7 +17,8 @@ app.post('/content-url', zValidator('json', ContentAddress), async (c) => {
     addr.ref = undefined;
   }
   try {
-    const octokit = initClient(c);
+    const client = new Client(c);
+    const octokit = await client.getApp(addr.owner);
     await fetchContent(octokit, addr);
     return c.html(
       <AppMessageBox title="OK!" type="link">
@@ -37,7 +37,7 @@ app.post('/content-url', zValidator('json', ContentAddress), async (c) => {
     c.status(404);
     return c.html(
       <AppMessageBox title="Error!" type="danger">
-        <p>Content is not found.</p>
+        <p>{error.message}</p>
       </AppMessageBox>,
     );
   }

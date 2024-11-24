@@ -4,6 +4,7 @@
  * This module is to manage routes for Web API (not render html and images).
  */
 import { Hono } from 'hono';
+import type { StatusCode } from 'hono/utils/http-status';
 import { AppMessageBox } from '../components/layouts';
 import { zValidator } from '@hono/zod-validator';
 import { ContentAddress } from '../models';
@@ -35,6 +36,7 @@ app.post('/content-url', zValidator('json', ContentAddress), async (c) => {
       </AppMessageBox>,
     );
   }
+  c.status(resp.status as StatusCode);
   return c.html(
     <AppMessageBox title="Error!" type="danger">
       <p>{await resp.text()}</p>

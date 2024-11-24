@@ -20,13 +20,14 @@ app.get('/', (c) => {
           <h1 class="title">Zenn Private Previwer</h1>
         </div>
       </section>
-      <section class="section">
+      <section class="section" hx-ext="response-targets">
         <div class="columns">
           <div class="column">
             <form
               hx-post="/app/content-url"
               hx-ext="json-enc"
               hx-target="#result"
+              hx-target-error="#result"
               hx-swap="innerHTML"
             >
               <Input name="owner" label="ユーザー/Org" />

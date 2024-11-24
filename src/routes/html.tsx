@@ -4,12 +4,8 @@
  * This module is to manage routes for Web API (not render html and images).
  */
 import { Hono } from 'hono';
-import { Octokit } from '@octokit/rest';
-import { fetchContent } from '../client';
 import { Input } from '../components';
-import { AppLayout, Layout } from '../components/layouts';
-import { parseSlug } from '../models';
-import { parseContentMarkdown } from '../parser';
+import { AppLayout } from '../components/layouts';
 
 const app = new Hono<{ Bindings: CloudflareBindings }>();
 

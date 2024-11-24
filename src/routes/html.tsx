@@ -13,7 +13,7 @@ const app = new Hono<{ Bindings: CloudflareBindings }>();
  * Render frontpage that has form.
  */
 app.get('/', (c) => {
-  return c.render(
+  return c.html(
     <AppLayout title="Zenn Private Previwer">
       <section class="hero">
         <div class="hero-body">

@@ -45,3 +45,17 @@ export const AppLayout: FC<
     </Layout>
   );
 };
+
+export const AppMessageBox: FC<
+  PropsWithChildren<{
+    title: string;
+    type: string;
+  }>
+> = (props) => (
+  <article class={`message is-${props.type}`}>
+    <div class="message-header">
+      <p>{props.title}</p>
+    </div>
+    <div class="message-body">{props.children}</div>
+  </article>
+);

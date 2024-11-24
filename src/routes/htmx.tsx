@@ -4,6 +4,7 @@
  * This module is to manage routes for Web API (not render html and images).
  */
 import { Hono } from 'hono';
+import { AppMessageBox } from '../components/layouts';
 import { zValidator } from '@hono/zod-validator';
 import { ContentAddress } from '../models';
 
@@ -21,21 +22,16 @@ app.post('/content-url', zValidator('json', ContentAddress), async (c) => {
   });
   const data = await resp.json();
   return c.html(
-    <article class="message is-link">
-      <div class="message-header">
-        <p>OK!</p>
-      </div>
-      <div class="message-body">
-        <p>Content URL is created!</p>
-        <p>
-          Link is{' '}
-          <a href={`/view/${data.slug}`} target="_blank" rel="noreferrer">
-            here
-          </a>
-          .
-        </p>
-      </div>
-    </article>,
+    <AppMessageBox title="OK!" type="link">
+      <p>Content URL is created!</p>
+      <p>
+        Link is{' '}
+        <a href={`/view/${data.slug}`} target="_blank" rel="noreferrer">
+          here
+        </a>
+        .
+      </p>
+    </AppMessageBox>,
   );
 });
 

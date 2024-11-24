@@ -17,6 +17,9 @@ export const Layout: FC<PropsWithChildren<LayoutProps>> = (props) => {
         {props.cssUrls?.map((css) => (
           <link rel="stylesheet" href={css} key={css} />
         ))}
+        {props.jsUrls?.map((js) => (
+          <script src={js} key={js} />
+        ))}
       </head>
       <body>{props.children}</body>
     </html>
@@ -32,14 +35,14 @@ export const AppLayout: FC<
   const cssFiles = [
     'https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css',
   ];
-  const jsFiles = [
+  const jsUrls = [
     'https://unpkg.com/htmx.org@2.0.3',
     'https://unpkg.com/htmx-ext-json-enc@2.0.1/json-enc.js',
     'https://unpkg.com/htmx-ext-client-side-templates@2.0.0/client-side-templates.js',
     'https://unpkg.com/mustache@latest',
   ];
   return (
-    <Layout title={props.title} cssUrls={cssFiles} jsUrls={jsFiles}>
+    <Layout title={props.title} cssUrls={cssFiles} jsUrls={jsUrls}>
       {props.children}
     </Layout>
   );

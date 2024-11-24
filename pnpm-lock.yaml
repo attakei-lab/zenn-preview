@@ -17,15 +17,9 @@ importers:
       '@octokit/app':
         specifier: ^15.1.1
         version: 15.1.1
-      '@octokit/auth-app':
-        specifier: ^7.1.3
-        version: 7.1.3
       '@octokit/core':
         specifier: ^6.1.2
         version: 6.1.2
-      '@octokit/rest':
-        specifier: ^21.0.2
-        version: 21.0.2
       front-matter:
         specifier: ^4.0.2
         version: 4.0.2
@@ -527,28 +521,12 @@ packages:
     peerDependencies:
       '@octokit/core': '>=6'
 
-  '@octokit/plugin-request-log@5.3.1':
-    resolution: {integrity: sha512-n/lNeCtq+9ofhC15xzmJCNKP2BWTv8Ih2TTy+jatNCCq/gQP/V7rK3fjIfuz0pDWDALO/o/4QY4hyOF6TQQFUw==}
-    engines: {node: '>= 18'}
-    peerDependencies:
-      '@octokit/core': '>=6'
-
-  '@octokit/plugin-rest-endpoint-methods@13.2.6':
-    resolution: {integrity: sha512-wMsdyHMjSfKjGINkdGKki06VEkgdEldIGstIEyGX0wbYHGByOwN/KiM+hAAlUwAtPkP3gvXtVQA9L3ITdV2tVw==}
-    engines: {node: '>= 18'}
-    peerDependencies:
-      '@octokit/core': '>=6'
-
   '@octokit/request-error@6.1.5':
     resolution: {integrity: sha512-IlBTfGX8Yn/oFPMwSfvugfncK2EwRLjzbrpifNaMY8o/HTEAFqCA1FZxjD9cWvSKBHgrIhc4CSBIzMxiLsbzFQ==}
     engines: {node: '>= 18'}
 
   '@octokit/request@9.1.3':
     resolution: {integrity: sha512-V+TFhu5fdF3K58rs1pGUJIDH5RZLbZm5BI+MNF+6o/ssFNT4vWlCh/tVpF3NxGtP15HUxTTMUbsG5llAuU2CZA==}
-    engines: {node: '>= 18'}
-
-  '@octokit/rest@21.0.2':
-    resolution: {integrity: sha512-+CiLisCoyWmYicH25y1cDfCrv41kRSvTq6pPWtRroRJzhsCZWZyCqGyI8foJT5LmScADSwRAnr/xo+eewL04wQ==}
     engines: {node: '>= 18'}
 
   '@octokit/types@13.6.1':
@@ -1685,15 +1663,6 @@ snapshots:
       '@octokit/core': 6.1.2
       '@octokit/types': 13.6.1
 
-  '@octokit/plugin-request-log@5.3.1(@octokit/core@6.1.2)':
-    dependencies:
-      '@octokit/core': 6.1.2
-
-  '@octokit/plugin-rest-endpoint-methods@13.2.6(@octokit/core@6.1.2)':
-    dependencies:
-      '@octokit/core': 6.1.2
-      '@octokit/types': 13.6.1
-
   '@octokit/request-error@6.1.5':
     dependencies:
       '@octokit/types': 13.6.1
@@ -1704,13 +1673,6 @@ snapshots:
       '@octokit/request-error': 6.1.5
       '@octokit/types': 13.6.1
       universal-user-agent: 7.0.2
-
-  '@octokit/rest@21.0.2':
-    dependencies:
-      '@octokit/core': 6.1.2
-      '@octokit/plugin-paginate-rest': 11.3.5(@octokit/core@6.1.2)
-      '@octokit/plugin-request-log': 5.3.1(@octokit/core@6.1.2)
-      '@octokit/plugin-rest-endpoint-methods': 13.2.6(@octokit/core@6.1.2)
 
   '@octokit/types@13.6.1':
     dependencies:

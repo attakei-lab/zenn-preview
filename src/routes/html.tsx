@@ -21,32 +21,33 @@ app.get('/', (c) => {
         </div>
       </section>
       <section class="section">
-        <form
-          hx-post="/api/content-url"
-          hx-ext="json-enc, client-side-templates"
-          hx-target="#result"
-          hx-swap="innerHTML"
-          mustache-template="tmpl-result"
-        >
-          <Input name="owner" label="ユーザー/Org" />
-          <Input name="repo" label="リポジトリ" />
-          <Input name="path" label="ファイルパス" />
-          <Input name="ref" label="ブランチ" />
-          <div class="field is-horizontal">
-            <div class="field-label" />
-            <div class="field-body">
+        <div class="columns">
+          <div class="column">
+            <form
+              hx-post="/api/content-url"
+              hx-ext="json-enc, client-side-templates"
+              hx-target="#result"
+              hx-swap="innerHTML"
+              mustache-template="tmpl-result"
+            >
+              <Input name="owner" label="ユーザー/Org" />
+              <Input name="repo" label="リポジトリ" />
+              <Input name="path" label="ファイルパス" />
+              <Input name="ref" label="ブランチ" />
               <div class="field">
                 <p class="control">
-                  <button class="button is-success" type="submit">
+                  <button class="button is-fullwidth is-success" type="submit">
                     URL生成
                   </button>
                 </p>
               </div>
-            </div>
+            </form>
           </div>
-        </form>
+          <div class="column">
+            <div class="section" id="result" />
+          </div>
+        </div>
       </section>
-      <section class="section" id="result" />
       <template id="tmpl-result">
         <article class="message is-link">
           <div class="message-header">

@@ -4,7 +4,7 @@
  * This module is to manage routes for Web API (not render html and images).
  */
 import { Hono } from 'hono';
-import { Input } from '../components';
+import { Input } from '../components/inputs';
 import { AppLayout } from '../components/layouts';
 
 const app = new Hono<{ Bindings: CloudflareBindings }>();

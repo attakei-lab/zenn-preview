@@ -87,6 +87,7 @@ app.get('/:slug', async (c) => {
     const md = await fetchContent(octokit, addr);
     const content = parseContentMarkdown(md);
     const cssUrls = [
+      'https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css',
       'https://cdn.jsdelivr.net/npm/zenn-content-css@0.1.158/lib/index.min.css',
     ];
     return c.render(
@@ -94,16 +95,18 @@ app.get('/:slug', async (c) => {
         title={`[PREVIRE]: ${content.frontMatter?.title}`}
         cssUrls={cssUrls}
       >
-        <div>
-          <h1>
+        <section class="section">
+          <h1 class="title">
             {content.frontMatter?.title}
             <br />
             {content.frontMatter?.emoji}
           </h1>
-        </div>
+        </section>
         <hr />
         <hr />
-        <div class="znc" dangerouslySetInnerHTML={{ __html: content.body }} />
+        <section class="section">
+          <div class="znc" dangerouslySetInnerHTML={{ __html: content.body }} />
+        </section>
       </Layout>,
     );
   } catch (error) {

@@ -38,8 +38,6 @@ export const AppLayout: FC<
   const jsUrls = [
     'https://unpkg.com/htmx.org@2.0.3',
     'https://unpkg.com/htmx-ext-json-enc@2.0.1/json-enc.js',
-    'https://unpkg.com/htmx-ext-client-side-templates@2.0.0/client-side-templates.js',
-    'https://unpkg.com/mustache@latest',
   ];
   return (
     <Layout title={props.title} cssUrls={cssFiles} jsUrls={jsUrls}>

@@ -24,11 +24,10 @@ app.get('/', (c) => {
         <div class="columns">
           <div class="column">
             <form
-              hx-post="/api/content-url"
-              hx-ext="json-enc, client-side-templates"
+              hx-post="/app/content-url"
+              hx-ext="json-enc"
               hx-target="#result"
               hx-swap="innerHTML"
-              mustache-template="tmpl-result"
             >
               <Input name="owner" label="ユーザー/Org" />
               <Input name="repo" label="リポジトリ" />
@@ -48,23 +47,6 @@ app.get('/', (c) => {
           </div>
         </div>
       </section>
-      <template id="tmpl-result">
-        <article class="message is-link">
-          <div class="message-header">
-            <p>OK!</p>
-          </div>
-          <div class="message-body">
-            <p>Content URL is created!</p>
-            <p>
-              Link is{' '}
-              <a href="/view/{{slug}}" target="_blank" rel="noreferrer">
-                here
-              </a>
-              .
-            </p>
-          </div>
-        </article>
-      </template>
     </AppLayout>,
   );
 });

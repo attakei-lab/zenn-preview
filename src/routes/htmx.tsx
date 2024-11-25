@@ -22,13 +22,12 @@ app.post('/content-url', zValidator('json', ContentAddress), async (c) => {
     await fetchContent(octokit, addr);
     return c.html(
       <AppMessageBox title="OK!" type="link">
-        <p>Content URL is created!</p>
+        <p>プレビュー用URLを生成しました。</p>
         <p>
-          Link is{' '}
           <a href={`/view/${makeSlug(addr)}`} target="_blank" rel="noreferrer">
-            here
+            このリンク
           </a>
-          .
+          からアクセスしてください（別画面表示）。
         </p>
       </AppMessageBox>,
     );

@@ -21,10 +21,16 @@ app.get('/:slug', async (c) => {
       'https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css',
       'https://cdn.jsdelivr.net/npm/zenn-content-css@0.1.158/lib/index.min.css',
     ];
+    const style = `
+      .tag {
+        all: revert;
+      }
+    `;
     return c.html(
       <Layout
         title={`[PREVIRE]: ${content.frontMatter?.title}`}
         cssUrls={cssUrls}
+        style={<style dangerouslySetInnerHTML={{ __html: style }} />}
       >
         <section class="section">
           <h1 class="title">

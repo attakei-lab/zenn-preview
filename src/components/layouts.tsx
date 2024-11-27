@@ -3,6 +3,7 @@ import { html } from 'hono/html';
 
 type LayoutProps = {
   title: string;
+  style?: any; // TODO: Find HTMLEscapedString
   cssUrls?: string[];
   jsUrls?: string[];
 };
@@ -20,6 +21,7 @@ export const Layout: FC<PropsWithChildren<LayoutProps>> = (props) => {
         {props.jsUrls?.map((js) => (
           <script src={js} key={js} />
         ))}
+        {props.style || null}
       </head>
       <body>{props.children}</body>
     </html>

@@ -17,6 +17,10 @@ app.get('/:slug', async (c) => {
   try {
     const md = await fetchContent(octokit, addr);
     const content = parseContentMarkdown(md);
+    const jsUrls = [
+      'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js',
+    ];
+
     const cssUrls = [
       'https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css',
       'https://cdn.jsdelivr.net/npm/zenn-content-css@0.1.158/lib/index.min.css',
@@ -26,9 +30,19 @@ app.get('/:slug', async (c) => {
         all: revert;
       }
     `;
+    const script = `
+        Array.from(document.querySelectorAll('div.code-block-container > pre'))
+          .filter(elm => elm.classList.length === 0)
+          .forEach(elm => {
+            const code = elm.querySelector('code').innerHTML;
+            elm.innerHTML = code;
+            elm.classList.add('mermaid');
+          });
+    `;
     return c.html(
       <Layout
         title={`[PREVIRE]: ${content.frontMatter?.title}`}
+        jsUrls={jsUrls}
         cssUrls={cssUrls}
         style={<style dangerouslySetInnerHTML={{ __html: style }} />}
       >
@@ -44,6 +58,7 @@ app.get('/:slug', async (c) => {
         <section class="section">
           <div class="znc" dangerouslySetInnerHTML={{ __html: content.body }} />
         </section>
+        <script dangerouslySetInnerHTML={{ __html: script }} />
       </Layout>,
     );
   } catch (error) {
